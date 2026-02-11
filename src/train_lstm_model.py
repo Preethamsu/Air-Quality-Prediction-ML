@@ -12,7 +12,7 @@ df['Date'] = pd.to_datetime(df['Date'])
 df = df.sort_values('Date')
 df = df.ffill()
 
-# Compute AQI (scaled to realistic range)
+# Compute AQI 
 df['AQI_raw'] = (
     0.35 * df['PM2.5'] +
     0.25 * df['PM10'] +
@@ -73,10 +73,3 @@ model.fit(
 model.save("models/lstm_model.keras")
 print("\nStable LSTM Model saved to models/lstm_model.keras")
 
-# ------------------------------
-# NOTE: Using this model in Streamlit
-# ------------------------------
-# To get the predicted AQI in the original scale, do:
-# pred_scaled = model.predict(X_input)[0]
-# pred_aqi = np.expm1(scaler.inverse_transform([[pred_scaled]]))[0][0]
-# Then you can display pred_aqi in Streamlit
