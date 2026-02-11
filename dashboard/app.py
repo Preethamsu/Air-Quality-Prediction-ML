@@ -50,13 +50,13 @@ pred = model.predict(X)[0]
 c1, c2, c3 = st.columns(3)
 
 with c1:
-    st.metric("🌫 Predicted AQI", round(pred,2))
+    st.metric("Predicted AQI", round(pred,2))
 
 with c2:
-    st.metric("🏥 Health Status", aqi_category(pred))
+    st.metric("Health Status", aqi_category(pred))
 
 with c3:
-    st.metric("📅 Last Updated", datetime.now().strftime("%d %b %Y, %H:%M:%S"))
+    st.metric("Last Updated", datetime.now().strftime("%d %b %Y, %H:%M:%S"))
 
 
 # AQI Gauge Meter
