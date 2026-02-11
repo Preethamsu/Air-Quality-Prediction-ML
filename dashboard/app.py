@@ -12,40 +12,30 @@ from src.feature_engineering import compute_aqi, create_features
 from src.utils import aqi_category
 from streamlit_autorefresh import st_autorefresh
 
-# -------------------------------
 # Page Config
-# -------------------------------
-st.set_page_config(page_title="AI Air Quality Monitoring", layout="wide")
-st.title("🌍 AI Powered Air Quality Monitoring System")
 
-# -------------------------------
+st.set_page_config(page_title="AI Air Quality Monitoring", layout="wide")
+st.title("AI Powered Air Quality Monitoring System")
+
 # Auto Refresh (every 10 sec)
-# -------------------------------
+
 st_autorefresh(interval=10000, key="refresh")
 
-# -------------------------------
 # Load Dataset
-# -------------------------------
 data_path = os.path.join(os.path.dirname(__file__), '..', 'data', 'ancona_data.csv')
 df = pd.read_csv(data_path)
 df['Date'] = pd.to_datetime(df['Date'])
 df = df.sort_values('Date').ffill()
 
-# -------------------------------
 # Feature Engineering
-# -------------------------------
 df = compute_aqi(df)
 df = create_features(df)
 
-# -------------------------------
 # Load Model
-# -------------------------------
 model_path = os.path.join(os.path.dirname(__file__), '..', 'models', 'rf_model.pkl')
 model = joblib.load(model_path)
 
-# -------------------------------
 # Prediction
-# -------------------------------
 latest = df.iloc[-1]
 X = pd.DataFrame([{
     'lag1': latest['lag1'],
@@ -56,9 +46,7 @@ X = pd.DataFrame([{
 
 pred = model.predict(X)[0]
 
-# -------------------------------
 # Layout
-# -------------------------------
 c1, c2, c3 = st.columns(3)
 
 with c1:
@@ -71,9 +59,7 @@ with c3:
     st.metric("📅 Last Updated", datetime.now().strftime("%d %b %Y, %H:%M:%S"))
 
 
-# -------------------------------
 # AQI Gauge Meter
-# -------------------------------
 fig_gauge = go.Figure(go.Indicator(
     mode="gauge+number",
     value=pred,
@@ -93,10 +79,8 @@ fig_gauge = go.Figure(go.Indicator(
 
 st.plotly_chart(fig_gauge, use_container_width=True)
 
-# -------------------------------
 # Interactive AQI Trend
-# -------------------------------
-st.subheader("📈 Interactive AQI Trend")
+st.subheader("Interactive AQI Trend")
 
 fig_trend = px.line(
     df.tail(1500),
@@ -108,10 +92,8 @@ fig_trend = px.line(
 
 st.plotly_chart(fig_trend, use_container_width=True)
 
-# -------------------------------
 # Daily Pattern Heatmap
-# -------------------------------
-st.subheader("🔥 Daily & Hourly AQI Heatmap")
+st.subheader("Daily & Hourly AQI Heatmap")
 
 df['hour'] = df['Date'].dt.hour
 df['day'] = df['Date'].dt.day
@@ -122,10 +104,8 @@ fig_heat = px.imshow(pivot, aspect='auto', color_continuous_scale='Turbo')
 
 st.plotly_chart(fig_heat, use_container_width=True)
 
-# -------------------------------
 # Pollutant Breakdown
-# -------------------------------
-st.subheader("🧪 Pollutant Contribution")
+st.subheader("Pollutant Contribution")
 
 poll = latest[['PM2.5','PM10','NO2','O3']]
 
