@@ -4,7 +4,6 @@
 **Author:** Preetham Siddapura Umesh
 **LinkedIn:** [https://www.linkedin.com/in/preethamsu/]
 
-
 **Mail-Id:**[preetham.umesh2003@gmail.com]
 **Domain:** Machine Learning / Deep Learning / Data Science / Environmental Analytics  
 **Tools:** Python, Streamlit, Pandas, NumPy, Scikit-learn, TensorFlow/Keras, Plotly  
